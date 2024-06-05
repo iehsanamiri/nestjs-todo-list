@@ -5,7 +5,10 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env.development',
+    }),
     MongooseModule.forRoot('mongodb://root:todo1234@localhost:27017/nest', {
       authSource: 'admin',
     }),

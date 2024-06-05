@@ -1,0 +1,3 @@
+type JwtPayload = {
+  sub: string;
+};

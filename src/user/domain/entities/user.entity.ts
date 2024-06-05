@@ -5,6 +5,7 @@ export class User extends AggregateRoot {
   constructor(
     public readonly id: string,
     public readonly username: string,
+    public readonly password: string,
     public readonly todoLists: TodoList[] = [],
   ) {
     super();

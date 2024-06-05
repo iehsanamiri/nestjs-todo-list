@@ -9,10 +9,10 @@ import { UserDocument } from 'src/user/infrastructure/database/schemas/user.sche
 export class MongooseUserRepository implements UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async save(user: User, password: string): Promise<User> {
+  async save(user: User): Promise<User> {
     let userDoc = new this.userModel({
       username: user.username,
-      password,
+      password: user.password,
     });
     userDoc = await userDoc.save();
     return this.toDomain(userDoc);
@@ -29,6 +29,6 @@ export class MongooseUserRepository implements UserRepository {
   }
 
   private toDomain(userDoc: UserDocument): User {
-    return new User(userDoc.id, userDoc.username, userDoc.todoLists);
+    return new User(userDoc.id, userDoc.username, userDoc.password, userDoc.todoLists);
   }
 }

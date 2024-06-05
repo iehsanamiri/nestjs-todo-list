@@ -1,6 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '../create-user.command';
-import { UserService } from 'src/domain/services/user.service';
+import { UserService } from 'src/user/domain/services/user.service';
 import { UserCreatedEvent } from '../../events/user-created.event';
 
 @CommandHandler(CreateUserCommand)
@@ -11,7 +11,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   ) {}
 
   async execute(command: CreateUserCommand): Promise<void> {
-    const user = await this.userService.registerUser(
+    const user = await this.userService.register(
       command.username,
       command.password,
     );

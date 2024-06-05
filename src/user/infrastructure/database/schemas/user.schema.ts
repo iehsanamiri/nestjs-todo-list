@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { TodoList } from 'src/domain/entities/todo-list.entity';
+import { TodoList } from 'src/user/domain/entities/todo-list.entity';
 
 @Schema()
 export class User {

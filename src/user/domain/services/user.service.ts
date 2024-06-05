@@ -11,13 +11,13 @@ export class UserService {
     private readonly eventBus: EventBus,
   ) {}
 
-  async registerUser(username: string, password: string): Promise<User> {
+  async register(username: string, password: string): Promise<User> {
     const hashedPassword = await this.hashPassword(password);
     const user = new User(null, username, []);
     return await this.userRepository.save(user, hashedPassword);
   }
 
-  async findUser(id: string): Promise<User> {
+  async findById(id: string): Promise<User> {
     return await this.userRepository.findById(id);
   }
 

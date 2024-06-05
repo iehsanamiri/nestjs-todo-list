@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserCommand } from 'src/application/commands/create-user.command';
+import { CreateUserCommand } from 'src/user/application/commands/create-user.command';
 import { GetUserQuery } from '../../application/queries/get-user.query';
 
 @Controller('users')

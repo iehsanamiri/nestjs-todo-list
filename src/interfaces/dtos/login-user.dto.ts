@@ -4,4 +4,3 @@ export class LoginUserDto {
     public readonly password: string,
   ) {}
 }
-

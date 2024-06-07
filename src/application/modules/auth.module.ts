@@ -15,6 +15,7 @@ import { SendWelcomeEmailHandler } from '../commands/handlers/send-welcome-email
 import { UserRegisteredHandler } from '../events/handlers/user-registered.handler';
 import { CqrsModule } from '@nestjs/cqrs';
 import { UserService } from '../../domain/services/user.service';
+import { AuthSagas } from '../sagas/auth.sagas';
 
 export const CommandHandlers = [RegisterHandler, SendWelcomeEmailHandler];
 
@@ -41,6 +42,7 @@ export const QueryHandlers = [];
     ...CommandHandlers,
     ...EventHandlers,
     ...QueryHandlers,
+    AuthSagas,
   ],
 })
 export class AuthModule {}

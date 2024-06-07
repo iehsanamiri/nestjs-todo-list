@@ -4,13 +4,13 @@ import { Model, Promise } from 'mongoose';
 import { UserRepository } from 'src/domain/repositories/user.repository';
 import { User } from 'src/domain/entities/user.entity';
 import {
-  toDomain,
+  toDomain, User as DBUser,
   UserDocument,
 } from 'src/infrastructure/database/schemas/user.schema';
 
 @Injectable()
 export class MongooseUserRepository implements UserRepository {
-  constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(DBUser.name) private userModel: Model<UserDocument>) {}
 
   async create(user: User): Promise<User> {
     let userDoc = new this.userModel({

@@ -4,6 +4,7 @@ import { Model, Promise } from 'mongoose';
 import { TodoListRepository } from '../../../domain/repositories/todo-list.repository';
 import { TodoList } from '../../../domain/entities/todo-list.entity';
 import {
+  TodoList as DBTodoList,
   TodoListDocument,
   todoListToDomain,
 } from '../../database/schemas/todo-list.schema';
@@ -11,7 +12,7 @@ import {
 @Injectable()
 export class MongooseTodoListRepository implements TodoListRepository {
   constructor(
-    @InjectModel('TodoList') private todoListModel: Model<TodoListDocument>,
+    @InjectModel(DBTodoList.name) private todoListModel: Model<TodoListDocument>,
   ) {}
 
   async create(todoList: TodoList): Promise<TodoList> {
@@ -23,9 +24,9 @@ export class MongooseTodoListRepository implements TodoListRepository {
     return todoListToDomain(todoListDoc);
   }
 
-  async update(id: string, title: string): Promise<TodoList> {
+  async update(todoList: TodoList): Promise<TodoList> {
     const todoListDoc = await this.todoListModel
-      .findOneAndUpdate({ _id: id }, { title }, { new: true })
+      .findOneAndUpdate({ _id: todoList.id }, todoList, { new: true })
       .exec();
     return todoListToDomain(todoListDoc);
   }

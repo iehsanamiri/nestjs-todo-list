@@ -3,7 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './application/modules/user.module';
 import { AuthModule } from './application/modules/auth.module';
-import { TodoModule } from './application/modules/todo.module';
+import { TodoListModule } from './application/modules/todo-list.module';
+import { TodoItemModule } from './application/modules/todo-item.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { TodoModule } from './application/modules/todo.module';
     }),
     AuthModule,
     UserModule,
-    TodoModule,
+    TodoListModule,
+    TodoItemModule,
   ],
 })
 export class AppModule {}

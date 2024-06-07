@@ -7,7 +7,6 @@ import {
 import { TodoListController } from '../../interfaces/controllers/todo-list.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TodoListService } from '../../domain/services/todo-list.service';
-import { TodoListSagas } from '../sagas/todo-list.sagas';
 import { CreateTodoListHandler } from '../commands/handlers/create-todo-list.handler';
 import { MongooseTodoListRepository } from '../../infrastructure/repositories/mongoose/todo-list.repository';
 import { MongooseUserRepository } from '../../infrastructure/repositories/mongoose/user.repository';
@@ -48,10 +47,9 @@ export const QueryHandlers = [GetTodoListHandler];
       useClass: MongooseUserRepository,
     },
     TodoListService,
-    TodoListSagas,
     ...CommandHandlers,
     ...EventHandlers,
     ...QueryHandlers,
   ],
 })
-export class TodoModule {}
+export class TodoListModule {}

@@ -6,7 +6,7 @@ import { User } from '../../domain/entities/user.entity';
 import { UserController } from '../../interfaces/controllers/user.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { UserService } from '../../domain/services/user.service';
-import { UserSagas } from '../sagas/user.sagas';
+import { AuthSagas } from '../sagas/auth.sagas';
 import { GetUserHandler } from '../queries/handlers/get-user.handler';
 
 export const CommandHandlers = [];
@@ -27,7 +27,6 @@ export const QueryHandlers = [GetUserHandler];
       useClass: MongooseUserRepository,
     },
     UserService,
-    UserSagas,
     ...CommandHandlers,
     ...EventHandlers,
     ...QueryHandlers,

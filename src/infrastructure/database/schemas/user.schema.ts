@@ -11,6 +11,7 @@ export class User extends Document {
   @Prop({ required: true })
   password: string;
 
+  // Use Embedding Instead Of Reference
   @Prop({ type: [Types.ObjectId], ref: TodoList.name, default: [] })
   todoLists: TodoList[];
 }

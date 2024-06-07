@@ -17,10 +17,12 @@ export class TodoListService {
   ) {}
 
   async create(userId: string, title: string) {
+    const user = await this.userRepository.findById(userId);
+
     const newTodoList = await this.todoListRepository.create(
       new TodoList(null, userId, title),
     );
-    const user = await this.userRepository.findById(newTodoList.userId);
+
     user.todoLists.push(newTodoList);
     await this.userRepository.update(user);
     return newTodoList;
@@ -35,7 +37,9 @@ export class TodoListService {
   }
 
   async update(id: string, title: string): Promise<any> {
-    const todoList = await this.todoListRepository.update(id, title);
+    let todoList = await this.findById(id);
+    todoList.title = title;
+    todoList = await this.todoListRepository.update(todoList);
     const user = await this.userRepository.findById(todoList.userId);
     if (user) {
       const index = user.todoLists.findIndex((todoList) => todoList.id == id);

@@ -18,7 +18,7 @@ import { UpdateTodoListDto } from '../dtos/update-todo-list.dto';
 import { UpdateTodoListCommand } from '../../application/commands/update-todo-list.command';
 import { DeleteTodoListCommand } from '../../application/commands/delete-todo-list.command';
 
-@Controller('todo-list')
+@Controller('todo-lists')
 export class TodoListController {
   constructor(
     private readonly commandBus: CommandBus,

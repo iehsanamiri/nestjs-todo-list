@@ -6,7 +6,7 @@ import { UserRegisteredEvent } from '../events/user-registered.event';
 import { SendWelcomeEmailCommand } from '../commands/send-welcome-email.command';
 
 @Injectable()
-export class UserSagas {
+export class AuthSagas {
   @Saga()
   userCreated = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(

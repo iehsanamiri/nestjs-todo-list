@@ -1,9 +1,5 @@
 import { TodoListRepository } from '../repositories/todo-list.repository';
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { TodoItemRepository } from '../repositories/todo-item.repository';
 import { TodoItem } from '../entities/todo-item.entity';
 import { UserRepository } from '../repositories/user.repository';
@@ -14,16 +10,17 @@ export class TodoItemService {
   constructor(
     @Inject('TodoListRepository')
     private readonly todoListRepository: TodoListRepository,
-    @Inject('TodoItemRepository') private readonly todoItemRepository: TodoItemRepository,
+    @Inject('TodoItemRepository')
+    private readonly todoItemRepository: TodoItemRepository,
     @Inject('UserRepository') private readonly userRepository: UserRepository,
   ) {}
-
 
   async create(todoListId: string, title: string, description: string) {
     let todoList = await this.todoListRepository.findById(todoListId);
 
+    const newPriority = this.getNewPriority(todoList.todoItems);
     const newTodoItem = await this.todoItemRepository.create(
-      new TodoItem(null, todoListId, title, description, 0),
+      new TodoItem(null, todoListId, title, description, newPriority),
     );
     todoList.todoItems.push(newTodoItem);
 
@@ -46,13 +43,22 @@ export class TodoItemService {
 
   async update(todoItem: TodoItem): Promise<any> {
     const updatedTodoItem = await this.todoItemRepository.update(todoItem);
-    let todoList = await this.todoListRepository.findById(updatedTodoItem.todoList);
+    let todoList = await this.todoListRepository.findById(
+      updatedTodoItem.todoList,
+    );
 
     if (todoList) {
       // update todoList
-      const index = todoList.todoItems.findIndex((todoItem) => todoItem.id == todoItem.id);
+      const index = todoList.todoItems.findIndex(
+        (todoItem) => todoItem.id == todoItem.id,
+      );
       if (index >= 0) {
         todoList.todoItems[index] = updatedTodoItem;
+
+        // SORT
+        todoList.todoItems = this.sortTodoItems(todoList.todoItems);
+
+        // UPDATE
         todoList = await this.todoListRepository.update(todoList);
       }
 
@@ -67,7 +73,9 @@ export class TodoItemService {
     await this.todoItemRepository.delete(id);
     let todoList = await this.todoListRepository.findById(todoItem.todoList);
     if (todoList) {
-      todoList.todoItems = todoList.todoItems.filter((todoItem) => todoItem.id !== id);
+      todoList.todoItems = todoList.todoItems.filter(
+        (todoItem) => todoItem.id !== id,
+      );
       todoList = await this.todoListRepository.update(todoList);
 
       // update user todoList
@@ -84,4 +92,15 @@ export class TodoItemService {
     }
   }
 
+  private sortTodoItems(todoItems: TodoItem[]): TodoItem[] {
+    todoItems.sort((a, b) => a.priority - b.priority);
+    return todoItems;
+  }
+
+  private getNewPriority(todoItems: TodoItem[]) {
+    if (todoItems.length == 0) {
+      return 0;
+    }
+    return todoItems[todoItems.length - 1].priority + 1;
+  }
 }

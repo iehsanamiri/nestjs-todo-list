@@ -16,12 +16,17 @@ import { UserRegisteredHandler } from '../events/handlers/user-registered.handle
 import { CqrsModule } from '@nestjs/cqrs';
 import { UserService } from '../../domain/services/user.service';
 import { AuthSagas } from '../sagas/auth.sagas';
+import { LoginHandler } from '../commands/handlers/login.handler';
+import { RefreshTokenHandler } from '../commands/handlers/refresh-token.handler';
 
-export const CommandHandlers = [RegisterHandler, SendWelcomeEmailHandler];
+export const CommandHandlers = [
+  RegisterHandler,
+  LoginHandler,
+  RefreshTokenHandler,
+  SendWelcomeEmailHandler,
+];
 
 export const EventHandlers = [UserRegisteredHandler];
-
-export const QueryHandlers = [];
 
 @Module({
   imports: [
@@ -41,7 +46,6 @@ export const QueryHandlers = [];
     UserService,
     ...CommandHandlers,
     ...EventHandlers,
-    ...QueryHandlers,
     AuthSagas,
   ],
 })
